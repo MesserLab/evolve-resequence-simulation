@@ -35,7 +35,7 @@ To adjust most of the variables, you will not need to edit the SLiM script and c
 
 There are some variables and scenarios that are not explicitly incorporated in the SLiM script but that can be conveniently implemented by editing `SlimScripts/Burnin.slim` and `SlimScripts /Selection.slim`. These variables and scenarios include:
 
-* heritability values other than 1 (see the SLiM manual 13.4)
+* heritability values other than 1 (see the SLiM Chapter manual 13.4)
 * selection modes other than truncating selection (see the SliM manual Chapter 13.1)
 * pleiotropy (see the SLiM manual Chapter 13.5)
 * population structure (see the SLiM manual Chapter 5.2)
