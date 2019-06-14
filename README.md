@@ -18,6 +18,7 @@ For the power analysis in QTL detection:
 5.	Plot ROC curve comparisons by combining the ROC tables from simulations of different trait architecture or experimental design given by step 4. You can use `RScripts/PlotROC.R` to do this. Alternatively, you can also create your own R scripts, since this step highly depends on what your specific comparison is.
 
 Note: 
+
 To adjust most of the variables, you will not need to edit the SLiM script and can directly input them through `Burnin.sh` and `Selection.sh`. Below is a list of these variables.
 
 |Trait architecture	|Population parameters	|Experimental design setting|
