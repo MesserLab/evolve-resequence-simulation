@@ -30,7 +30,7 @@ To adjust most of the variables, you will not need to edit the SLiM script and c
 |Dominance	|Nucleotide diversity	| |
 |Pairwise epistasis	|	| |
 
-* To modify these two variables, one single value will need to be changed in the `.slim` files. See the scripts for details. 
+\* To modify these two variables, one single value will need to be changed in the `.slim` files. See the scripts for details. 
 
 There are some variables and scenarios that are not explicitly incorporated in the SLiM script but that can be conveniently implemented by editing `SlimScripts/Burnin.slim` and `SlimScripts /Selection.slim`. These variables and scenarios include heritability values other than 1 (see the SLiM manual 13.4), selection modes other than truncating selection (see the SliM manual Chapter 13.1), pleiotropy (see the SLiM manual Chapter 13.5), population structure (see the SLiM manual Chapter 5.2), demographic history prior to the selection experiment (see the SLiM manual Chapter 5), known genotypic data of the experimental population (see the SLiM manual Chapter 18.12), and others.
 
