@@ -9,6 +9,7 @@ For the simulation of E&R experiment:
 1.	Create neutral populations representing the population prior to the selection experiment. To do this, read and edit `ShellScripts/Burnin.sh`. Then, run `Burnin.sh`.
 
 2.	Establish the trait architecture and simulate the selection experiment. For this, read and edit `ShellScripts/Selection.sh`, then run the script. This step can be repeated to simulate different combinations of trait architecture and experimental design. These can be created using the same burn-in.
+
 For the power analysis in QTL detection:
 
 3.	Compile the SLiM outputs from each simulation in step 2, and (optionally) create input files for WFABC and ApproxWF. To do this, read, edit, and run `RScripts/Compile.R`
