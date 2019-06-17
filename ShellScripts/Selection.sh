@@ -36,29 +36,52 @@ do
         for i in {T,F} # Set the direction of selection (F if selecting the larger phenotype, T otherwise, T,F is both directions are selected)
         do
             echo $i
-            ~/Program/SLiM/bin/slim \ # slim directory
-            -d SimRepID=$k  \ # SimuRepID = Simulation Replicate ID
-            -d ExpRepID=$j \ # ExpRepID = Experiment replicate ID
-            -d Direction=$i \ # Direction = direction of selection; set this at the line "for i in {T,F}" above
-            -d "BurninPath='/fs/cbsubscb10/storage/rl683/TemporalScan/Simulations/Burnin/'" \ # BurninPath = path to the burnin files
-            -d "BurninFilename='Burnin.txt'" \ # BurninFilename = name of the burnin file
-            -d LCh=30000000 \ # LCh = length of chromosome (CHANGE THIS ONLY WHEN THE BURNIN USES A DIFFERENT CHROMOSOME SIZE)
-            -d RecRate=1e-8 \ # RecRate = recombination rate (change the slim script if simulating multiple chromosomes)
-            -d SampleSize=50 \ # SampleSize = number of individuals to sample each generation
-            -d NQTL=10 \ # NQTL = number of QTLs, (even number is recommended when the number is small)
-            -d ESMean=1.0 \ # ESMean = absolute value of mean effect size
-            -d "ESDist='f'" \ # ESDist = effect size distribution("f" for fixed or "e" for exponential), 
-            -d LowFreq=F \ # LowFreq = starting frequency preference (T if selecting for lower frequency, F if selecting for higher frequency or random) 
-            -d FreqBound=0.0 \ # FreqBound = frequency bound (0.0~0.5, 0.0 if starting frequency is random)
-            -d LowerPosBound=0 \ # LowerPosBound = lower position bound (0 if random)
-            -d UpperPosBound=29999999 \ # UpperPosBound = upper position bound (LCh-1 if random)
-            -d D=0.5 \ # D = dominance coefficient (0.0~1.0, 1.0 for mutant being completely dominant and 0.0 for wildtype to being completely dominant.)
-            -d Epistasis=F \ # Epistasis = F if there is no epistasis, T otherwise
-            -d "EpiSce=c(0,1,2,1,2,3,2,3,4)" \ # EpiSce = epistasis scenario; vector of size 9; first element must be 0; needs to be defined if Epistasis ==T; the nine value corresponds to phenotypes of genotypes in the following order: c(aabb, Aabb, AAbb, aaBb, AaBb, AABb, aaBB, AaBB, AABB); e.g. c(0,1,2,1,2,3,2,3,4) when there is no epistasis.
-            -d PopSize=1000 \ # PopSize = population size (can only downsample)
-            -d SelectedSize=100 \ # SelectedSize = number of selected individuals in each generation
-            -d "OutPath='/fs/cbsubscb10/storage/rl683/TemporalScan/Simulations/NQTL10/'" \ # OutPath = output path
+            # Set the path to the SLiM program in the next line 
+            ~/Program/SLiM/bin/slim \
+            -d SimRepID=$k  \
+            -d ExpRepID=$j \
+            -d Direction=$i \
+            -d "BurninPath='/fs/cbsubscb10/storage/rl683/TemporalScan/Simulations/Burnin/'" \
+            -d "BurninFilename='Burnin.txt'" \
+            -d LCh=30000000 \
+            -d RecRate=1e-8 \
+            -d SampleSize=50 \
+            -d NQTL=10 \
+            -d ESMean=1.0 \
+            -d "ESDist='f'" \
+            -d LowFreq=F \
+            -d FreqBound=0.0 \
+            -d LowerPosBound=0 \
+            -d UpperPosBound=29999999 \
+            -d D=0.5 \
+            -d Epistasis=F \
+            -d "EpiSce=c(0,1,2,1,2,3,2,3,4)" \
+            -d PopSize=1000 \
+            -d SelectedSize=100 \
+            -d "OutPath='/fs/cbsubscb10/storage/rl683/TemporalScan/Simulations/NQTL10/'" \
             /fs/cbsubscb10/storage/rl683/TemporalScan/SlimScripts/Selection.slim # Directory to the Selection.slim file included in the simulation tool.
         done
     done
 done
+
+# SimuRepID = Simulation Replicate ID
+# ExpRepID = Experiment replicate ID
+# Direction = direction of selection; set this at the line "for i in {T,F}" above
+# BurninPath = path to the burnin files
+# BurninFilename = name of the burnin file
+# LCh = length of chromosome (CHANGE THIS ONLY WHEN THE BURNIN USES A DIFFERENT CHROMOSOME SIZE)
+# RecRate = recombination rate (change the slim script if simulating multiple chromosomes)
+# SampleSize = number of individuals to sample each generation
+# NQTL = number of QTLs, (even number is recommended when the number is small)
+# ESMean = absolute value of mean effect size
+# ESDist = effect size distribution("f" for fixed or "e" for exponential), 
+# LowFreq = starting frequency preference (T if selecting for lower frequency, F if selecting for higher frequency or random) 
+# FreqBound = frequency bound (0.0~0.5, 0.0 if starting frequency is random)
+# LowerPosBound = lower position bound (0 if random)
+# UpperPosBound = upper position bound (LCh-1 if random)
+# D = dominance coefficient (0.0~1.0, 1.0 for mutant being completely dominant and 0.0 for wildtype to being completely dominant.)
+# Epistasis = F if there is no epistasis, T otherwise
+# EpiSce = epistasis scenario; vector of size 9; first element must be 0; needs to be defined if Epistasis ==T; the nine value corresponds to phenotypes of genotypes in the following order: c(aabb, Aabb, AAbb, aaBb, AaBb, AABb, aaBB, AaBB, AABB); e.g. c(0,1,2,1,2,3,2,3,4) when there is no epistasis.
+# PopSize = population size (can only downsample)
+# SelectedSize = number of selected individuals in each generation
+# OutPath = output path
