@@ -48,20 +48,20 @@ if (Type %in% c("QTL_architecture", "Experimental_design")){ # define filenames,
                 , "Number_of_generations_10_QTLs"
     )
     
-    filenames <-   list(c("NQTL10_NGen5", "NQTL10_FewerSNPs_NGen5")
-                        , c("NQTL2_NGen5", "NQTL10_NGen5", "NQTL20_NGen5", "NQTL100_NGen5", "NQTL200_NGen5")
-                        , c("NQTL10_NGen5", "NQTL10_FreqLow5_NGen5", "NQTL10_FreqHigh5_NGen5")
-                        , c("NQTL100_NGen5", "NQTL100_FreqLow5_NGen5", "NQTL100_FreqHigh5_NGen5")
-                        , c("NQTL10_NGen5", "NQTL10_ESDistE_NGen5")
-                        , c("NQTL100_NGen5", "NQTL100_ESDistE_NGen5")
-                        , c("NQTL10_NGen5", "NQTL10_D1_NGen5",  "NQTL10_D0_NGen5")
-                        , c("NQTL100_NGen5", "NQTL100_D0_NGen5", "NQTL100_D1_NGen5")
-                        , c("NQTL10_NGen5", "NQTL10_Clustered_NGen5")
-                        , c("NQTL100_NGen5", "NQTL100_Clustered_NGen5")
-                        , c("NQTL10_NGen5", "NQTL10_EpiSce9_NGen5", "NQTL10_EpiSce4_NGen5", "NQTL10_EpiSce8_NGen5", "NQTL10_EpiSce1_NGen5", "NQTL10_EpiSce5_NGen5", "NQTL10_EpiSce10_NGen5", "NQTL10_EpiSce7_NGen5", "NQTL10_EpiSce11_NGen5")
+    filenames <-   list(c("NQTL10", "NQTL10_FewerSNPs")
+                        , c("NQTL2", "NQTL10", "NQTL20", "NQTL100", "NQTL200")
+                        , c("NQTL10", "NQTL10_FreqLow5", "NQTL10_FreqHigh5")
+                        , c("NQTL100", "NQTL100_FreqLow5", "NQTL100_FreqHigh5")
+                        , c("NQTL10", "NQTL10_ESDistE")
+                        , c("NQTL100", "NQTL100_ESDistE")
+                        , c("NQTL10", "NQTL10_D1",  "NQTL10_D0")
+                        , c("NQTL100", "NQTL100_D0", "NQTL100_D1")
+                        , c("NQTL10", "NQTL10_Clustered")
+                        , c("NQTL100", "NQTL100_Clustered")
+                        , c("NQTL10", "NQTL10_EpiSce9", "NQTL10_EpiSce4", "NQTL10_EpiSce8", "NQTL10_EpiSce1", "NQTL10_EpiSce5", "NQTL10_EpiSce10", "NQTL10_EpiSce7", "NQTL10_EpiSce11")
                         , c("NQTL100", "NQTL100_ESDistE", "NQTL100_NGen20SelectedSize200", "NQTL100_NGen20SelectedSize200ESDistE")
-                        , c("NQTL100", "NQTL100_NGen5")
-                        , c("NQTL10", "NQTL10_NGen5")
+                        , c("NQTL100", "NQTL100")
+                        , c("NQTL10", "NQTL10")
     )
     
     labels <- list(c("~14000 SNPs \n(Standard)", "~1400 SNPs")
@@ -95,7 +95,7 @@ if (Type %in% c("QTL_architecture", "Experimental_design")){ # define filenames,
             DirectionName <- "OppositeDirections"
           }
           setwd(paste0(OutPath, "Simulations/", filename, "/SimRep", k, "/ExpRep", Direction, NExpRep))
-          ROC <- read.table("ROC_TwoTimepoints.txt", sep = ",",  header = T, stringsAsFactors = F)
+          ROC <- read.table("ROC_AllTimepoints_NGen5_TransformedD.txt", sep = ",",  header = T, stringsAsFactors = F)
           if(dim(ROC)[2]==6){
             ROC <- cbind(ROC, ROC[,2])
           }
@@ -242,7 +242,8 @@ for (j in c(1,2,3)) {
     df <- df[,c(1,4,7,8)]
     df <- cbind(df, EffectSize)
     df[is.na(df)]<-0
-    df <- cbind(df, D=abs(df$FrequencyPlus-df$FrequencyMinus)) 
+    df <- mutate(df, D=abs(2*asin(sqrt(FrequencyPlus/100))-2*asin(sqrt(FrequencyMinus/100)))/pi) 
+    
     if (i==1){
       gg_frame <- df
     }
@@ -250,8 +251,7 @@ for (j in c(1,2,3)) {
       gg_frame<-rbind(gg_frame, df)
     }
   }
-  gg_frame[,6]<-gg_frame[,6]/100
-  
+
   EffectType <- rep("Neutral", dim(gg_frame)[1])
   EffectType[which(gg_frame$EffectSize>0)] <- "QTL"
   EffectType[which(gg_frame$EffectSize<0)] <- "QTL"
@@ -262,15 +262,15 @@ for (j in c(1,2,3)) {
     geom_bar(aes(y=..prop..), position='dodge') +
     scale_color_manual(values=c("Black", "Black"), label=c(" Neutral loci", " QTLs")) +
     scale_fill_manual(values=c("Grey", "Black"), label=c(" Neutral loci", " QTLs")) +
-    xlab("D-value") +
+    xlab("Transformed D") +
     ylab("Proportion") +
     scale_x_continuous(breaks = c(seq(0, 10, by=1)+0.5),
                        labels = c(seq(0, 1, by=0.1))) +
-    coord_cartesian(ylim=c(0,0.8)) +
+    coord_cartesian(ylim=c(0,0.7)) +
     theme_bw() +
     theme(axis.text = element_text(size=30), axis.title = element_text(size=30)) +
     theme(text = element_text(size=30)) +
-    theme(legend.position=c(0.75, 0.9)) +
+    theme(legend.position=c(0.75, 0.87)) +
     theme(legend.text=element_text(size=30)) +
     theme(legend.background = element_rect(fill = "transparent", color="black")) +
     theme(legend.title = element_blank()) +
@@ -298,7 +298,7 @@ figure_7_down <- plot_grid(panel_c, panel_d, panel_e, labels=c("C", "D", "E"), n
 
 figure_7<- plot_grid(figure_7_up, figure_7_down, nrow = 2, rel_heights = c(1, 2/3))
 
-png(paste0("/fs/cbsubscb10/storage/rl683/TemporalScan/Figures/FiguresForPaper/Figure_7.png"), width = 800*2, height = 750*(1+2/3), units = "px", pointsize = 20)
+png(paste0("~/evolve-resequence-simulation/Figures/figure_7.png"), width = 800*2, height = 750*(1+2/3), units = "px", pointsize = 20)
 print(figure_7)
 dev.off()
 

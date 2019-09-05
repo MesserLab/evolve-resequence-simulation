@@ -5,8 +5,8 @@ scenarios <- c("NQTL100", "NQTL100_D0", "NQTL100_D1", "NQTL10", "NQTL10_D0", "NQ
 
 for (k in c(4,5)) {
   scenario <- scenarios[k]
+  print(scenario)
   for (i in 1:100){
-    print(i)
     setwd(paste0("/fs/cbsubscb10/storage/rl683/TemporalScan/Simulations/", scenario, "/SimRep", i, "/ExpRepPlus1"))
     df1 <- read.table("SampleFreqAllTimepoints.txt", sep = ",", header = T)
     setwd(paste0("/fs/cbsubscb10/storage/rl683/TemporalScan/Simulations/", scenario, "/SimRep", i, "/ExpRepMinus1"))
@@ -23,7 +23,7 @@ for (k in c(4,5)) {
     df <- df[,c(1,4,7,8)]
     #df <- cbind(df, Position, EffectSize)
     df[is.na(df)]<-0
-    df <- cbind(df, D=abs(df$FrequencyPlus-df$FrequencyMinus)) 
+    df <- mutate(df, D=abs(2*asin(sqrt(FrequencyPlus/100))-2*asin(sqrt(FrequencyMinus/100)))/pi, StartingFrequency=StartingFrequency/100) 
     if (i==1){
       gg_frame <- df
     }
@@ -31,8 +31,6 @@ for (k in c(4,5)) {
       gg_frame<-rbind(gg_frame, df)
     }
   }
-  
-  gg_frame[,-1]<-gg_frame[,-1]/100
   
   fit1 <- glm(D~StartingFrequency, data=gg_frame, family=binomial)
   
@@ -45,7 +43,7 @@ for (k in c(4,5)) {
     scale_y_continuous(limits = c(0,1)) + 
     theme(legend.position="none") +
     xlab("Starting Frequency") +
-    ylab("D-value") +
+    ylab("Transformed D") +
     theme(axis.title = element_text(size = 30)) +
     theme(axis.text=element_text(size=30)) +
     theme(title = element_text(size=20)) +
@@ -66,6 +64,6 @@ for (k in c(4,5)) {
 
 library(cowplot)
 figure_s8 <- plot_grid(panel_4, panel_5, labels=c("A", "B"), nrow = 1, label_size=30)
-png(paste0("../FiguresForPaper/Figure_S8.png"), width = 800*2, height = 750, units = "px", pointsize = 20)
+png(paste0("~/evolve-resequence-simulation/Figures/figure_s8.png"), width = 800*2, height = 750, units = "px", pointsize = 20)
 print(figure_s8)
 dev.off()

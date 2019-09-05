@@ -35,7 +35,7 @@ if (Type %in% c("ComputationalMethod")){
       setwd(paste0(OutPath, "Simulations/", filename, "/SimRep", sim_rep_id, "/", "ExpRep", Direction, NExpRep, "/")) ## set directory to experimental replication
       ROC <- read.table("ROC_TwoTimepoints_NGen5.txt", sep = ",",  header = T, stringsAsFactors = F)
       temp <- read.table("ROC_AllTimepoints_NGen5.txt", sep = ",",  header = T, stringsAsFactors = F)
-      temp2 <- read.table("ROC_TwoTimepoints_NGen5_TransformedD.txt", sep = ",",  header = T, stringsAsFactors = F) %>%
+      temp2 <- read.table("ROC_AllTimepoints_NGen5_TransformedD.txt", sep = ",",  header = T, stringsAsFactors = F) %>%
         mutate(Computational_method = "TransformedD")
       ROC <- rbind(ROC, temp, temp2)
       ROC[,5]<-paste0(ROC[,5], "_", ROC[,6])
@@ -84,7 +84,7 @@ if (Type %in% c("ComputationalMethod")){
     p2 <- ggplot(ROC_final, aes(False_positive_rate,Proportion_of_QTL_detected_weighted, color = factor(color, labels = labels))) + 
       geom_line(size = 2, alpha = 0.8, linetype="dotted") + 
       geom_line(data=ROC_final[which(ROC_final[,2]>0 | ROC_final[,3]>0),], aes(False_positive_rate, Proportion_of_QTL_detected_weighted, color = factor(color, labels = labels)), size = 2, alpha = 1) + 
-      scale_x_continuous(limits = c(0,0.105), breaks = seq(0,0.1,0.02)) + 
+      scale_x_continuous(breaks = seq(0,0.1,0.02)) +
       scale_y_continuous(limits = c(0,1)) + 
       coord_cartesian(xlim = c(0,0.1)) +
       xlab("False positive rate") +
@@ -130,7 +130,7 @@ if (Type %in% c("ComputationalMethod")){
     print(p4)
     dev.off()
     
-    png(paste0("../../FiguresForPaper/Figure_2.png"), width = 800, height = 750, units = "px", pointsize = 20)
+    png(paste0("~/evolve-resequence-simulation/Figures/figure_2.png"), width = 800, height = 750, units = "px", pointsize = 20)
     print(p4)
     dev.off()
     
