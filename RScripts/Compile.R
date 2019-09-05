@@ -9,7 +9,7 @@ library(data.table)
 LCh=30000000 # length of chromosome; make sure that the simulation had LCh EQUAL to this
 PopSize=1000 # make sure that the simulation had SampleSize EQUAL to this
 SampleSize=50 # make sure that the simulation had SampleSize LARGER or EQUAL to this
-NGen=5 # make sure that the simulation had NGen LARGER or EQUAL to this
+NGen=10 # make sure that the simulation had NGen LARGER or EQUAL to this
 NsExpRep=c(1 
              #, 2, 5
              ) # make sure that the simulation had NExpRep LARGER or EQUAL to each element in this
@@ -18,8 +18,8 @@ TimepointsSampled<-list(
   c(1, NGen)
 ) 
 OutNames <- c(
-  "AllTimepoints_NGen5",
-  "TwoTimepoints_NGen5"
+  "AllTimepoints",
+  "TwoTimepoints"
 ) # Just to differentiate output of all timepoints from two timepoints.
 Directions<- c("Plus" 
                , "Minus"
@@ -33,7 +33,8 @@ Filenames <- c(# "NQTL100"
                # , "NQTL10_D0"
                # , "NQTL10_ESDistE"
                # , "NQTL10_FreqLow5"
-               # , "NQTL10"
+               # , 
+  "NQTL10"
                # , "NQTL100_Clustered"
                # , "NQTL100_D1" 
                # , "NQTL100_FreqHigh5"
@@ -46,8 +47,7 @@ Filenames <- c(# "NQTL100"
                # , "NQTL10_EpiSce4"
                # , "NQTL10_EpiSce5"
                # , "NQTL10_EpiSce6"
-               #, 
-               "NQTL10_FewerSNPs"
+               #, "NQTL10_FewerSNPs"
                # , "NQTL10_D25"
                # , "NQTL10_D75"
                # , "NQTL100_D25"

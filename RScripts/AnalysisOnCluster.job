@@ -1,0 +1,15 @@
+#!/bin/bash
+#$ -S /bin/bash
+#$ -cwd
+#$ -j y
+#$ -pe bscb 1
+#$ -M rl683@cornell.edu
+#$ -m be
+#$ -p 0
+
+## Run this with "for k in {1..28}; do qsub -v scenario_index=$k AnalysisOnCluster.job; done"
+
+/programs/bin/labutils/mount_server cbsubscb10 /storage
+
+Rscript --vanilla /home/rl683/evolve-resequence-simulation/RScripts/AnalysisOnCluster.R  $scenario_index
+

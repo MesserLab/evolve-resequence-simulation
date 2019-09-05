@@ -1,9 +1,11 @@
 ## This script is used to calculate power and false positive rate at different thresholds.
 ## First define variables by selecting the experimental designs that you want to compare. This is necessary because compiled output from different experimental designs can generated from a single selection experiment simulation. (e.g. If you have two experimental replicates in the simulation, you can still include only one of them in power analysis.) Variable names are the same as in the shell and slim scripts before unless noted otherwise. 
-## Run this script on server with the following command: nohup R CMD BATCH ./Analysis.R  ./Analysis.log > Analysis.nohup & 
+## Run this script on server with the following command: qsub -v scenario_index=$k AnalysisOnCluster.job 
 
-rm(list=ls(all=TRUE))
 library(data.table)
+
+args = commandArgs(trailingOnly=TRUE)
+scenario_index <- as.numeric(args[1])
 
 LChr=30000000 # length of chromosome; make sure that the simulation had LChr EQUAL to this
 PopSize=1000 # make sure that the simulation had SampleSize EQUAL to this
@@ -13,15 +15,15 @@ NsExpRep=c(1
            #, 2, 5
 ) # make sure that the simulation had NExpRep LARGER or EQUAL to each element in this
 TimepointsSampled<-list(
-  #c(1:NGen)
+  c(1:NGen)
   #,
-  c(1, NGen)
-) # Use c(1:NGen) only when comparing computational methods
+  #c(1, NGen)
+) # Use c(1, NGen) only when comparing computational methods
 OutNames <- c(
-  #"AllTimepoints"
+  "AllTimepoints"
   #,
-  "TwoTimepoints"
-) # Use AllTimepoints only when comparing computational methods
+  #"TwoTimepoints"
+) # Use TwoTimepoints only when comparing computational methods
 Directions<- c("Plus" 
                , "Minus"
 ) # Direction of selection; when doing both Directions with repetition, the ROC table of single Direction with repetition will not be outputted, so single Direction with repetition should be ran if needed
@@ -60,24 +62,25 @@ Filenames <- c("NQTL100"
                , "NQTL10_EpiSce9"
                , "NQTL10_EpiSce10"
                , "NQTL10_EpiSce11"
+               , "NQTL200"
+               , "NQTL2"
+               , "NQTL20"
                , "NQTL10_FewerSNPs"
                , "NQTL10_D25"
                , "NQTL10_D75"
                , "NQTL100_D25"
                , "NQTL100_D75"
-               , "NQTL200"
-               , "NQTL2"
-               , "NQTL20"
                , "NQTL100_NGen20SelectedSize200"
                , "NQTL100_NGen20SelectedSize200ESDistE"
 )
 ## Create ROC tables ###################################################################################################
 ########################################################################################################################
-for (FilenameNumber in c(26)){ 
+for (FilenameNumber in c(scenario_index)){ 
   Filename <- Filenames[FilenameNumber]
   for (SimRepID in 1:NSimRep){
     ## Get individual genotypes at true QTLs and individual trait values in the first generation; it's the same for all experimental replicates
     print(SimRepID)
+    print(paste0(OutPath, Filename, "/SimRep", SimRepID, "/", "ExpRepPlus1/"))
     setwd(paste0(OutPath, Filename, "/SimRep", SimRepID, "/", "ExpRepPlus1/")) ## set directory to experimental replication
     data <- read.table("Gen1_Full.txt", fill = T, stringsAsFactors = F)
     gen_1_n_SNP <- which(data[,1]=="Genomes:") - 3
@@ -119,16 +122,11 @@ for (FilenameNumber in c(26)){
       for (NExpRep in 1:max(NsExpRep)){
         for (Direction in Directions){
           setwd(paste0(OutPath, Filename, "/SimRep", SimRepID, "/", "ExpRep", Direction, NExpRep, "/")) ## set directory to experimental replication
-          if (file.exists(paste0("SampleFreq", out_name, "_NGen5.txt"))) {
-            full_output_temp <-read.table(paste0("SampleFreq", out_name, "_NGen5.txt"), sep = ",", header = T, stringsAsFactors = F)
-          } else {
-            full_output_temp <-read.table(paste0("SampleFreq", out_name, ".txt"), sep = ",", header = T, stringsAsFactors = F)
-          }
+          full_output_temp <-read.table(paste0("SampleFreq", out_name, ".txt"), sep = ",", header = T, stringsAsFactors = F)
           
           ## Contruct a dataframe consisting only of mutation info and D (the absolute value) and p-value
           ## then merge different exp_reps, using NExpRep to weigh the mean of D and p-value
           ## then we can use these D and p-values directly in later steps
-          
           full_output_temp <- cbind(full_output_temp[,c(1:6)], 2*asin(sqrt(full_output_temp[,6+n_timepoints]/(2*SampleSize)))-2*asin(sqrt(full_output_temp[,7]/(2*SampleSize))))
           if (Direction == "Plus"){
             full_output_temp[,7] <- full_output_temp[,7]
@@ -217,7 +215,7 @@ for (FilenameNumber in c(26)){
             
             ## Quantify selection by SNP
             for (computational_method in ComputationalMethods){
-              if (out_name=="AllTimepoints" & computational_method == "D" & NGen == 5){ # Make sure that ROC for D isn't calculated twice, once with all time points and once with two
+              if (out_name=="TwoTimepoints" & computational_method == "D"){ # Make sure that ROC for D isn't calculated twice, once with all time points and once with two
               } else {
                 if (computational_method == "D"){
                   ## get abs_D from full_output
@@ -309,9 +307,9 @@ for (FilenameNumber in c(26)){
             }
             ## Also, when doing selection in both Directions, the output only makes sense when results from both Directions are incorporated in it
             if (exists("ROC") & Direction==Directions[length(Directions)]){ 
-              write.table(ROC, paste0("ROC_", out_name, "_NGen5_TransformedD.txt"), sep=",", col.names=T, row.names = F, quote = F)
+              write.table(ROC, paste0("ROC_", out_name, "_NGen", NGen, "_TransformedD.txt"), sep=",", col.names=T, row.names = F, quote = F)
             } else if (exists("ROC") & NExpRep==1){
-              write.table(ROC, paste0("ROC_", out_name, "_NGen5_TransformedD.txt"), sep=",", col.names=T, row.names = F, quote = F)
+              write.table(ROC, paste0("ROC_", out_name, "_NGen", NGen, "_TransformedD.txt"), sep=",", col.names=T, row.names = F, quote = F)
             }
             ## The following is necessary because sometimes ROC is not created
             if (exists("ROC")){
