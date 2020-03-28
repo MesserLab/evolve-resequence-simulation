@@ -105,7 +105,7 @@ if (Type %in% c("ComputationalMethod")){
       theme(axis.text=element_text(size=30))
     
     p4 <- p2 +
-      theme(legend.position = c(0.65, 0.78)) +
+      theme(legend.position = c(0.65, 0.83)) +
       theme(legend.text=element_text(size=30)) +
       theme(legend.background = element_rect(fill = "transparent", color="black")) +
       theme(legend.title = element_blank()) +

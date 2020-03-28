@@ -184,7 +184,7 @@ if (Type %in% c("QTL_architecture", "Experimental_design")){ # define filenames,
         theme(axis.title = element_text(size = 30)) +
         theme(axis.text=element_text(size=30))
       p6 <- p3 +
-        theme(legend.position = c(0.8, 0.3)) +
+        theme(legend.position = c(0.8, 0.9)) +
         theme(legend.text=element_text(size=30)) +
         theme(legend.background = element_rect(fill = "transparent", color="black")) +
         theme(legend.title = element_blank()) +

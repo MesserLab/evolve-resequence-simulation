@@ -183,7 +183,7 @@ if (Type %in% c("QTL_architecture", "Experimental_design")){ # define filenames,
         theme(axis.title = element_text(size = 30)) +
         theme(axis.text=element_text(size=30))
       p6 <- p3 +
-        theme(legend.position = c(0.7, 0.215)) +
+        theme(legend.position = c(0.7, 0.24)) +
         theme(legend.text=element_text(size=30)) +
         theme(legend.background = element_rect(fill = "transparent", color="black")) +
         theme(legend.title = element_blank()) +
@@ -369,7 +369,7 @@ for (i in 11){
     theme_bw() +
     ggtitle(NULL) +
     scale_x_continuous(limits = c(1,5), breaks = seq(1,5,1)) + 
-    scale_y_continuous(limits = c(0.68,1.02), breaks = seq(0.7,1,0.1)) + 
+    scale_y_continuous(limits = c(0.65,1.02), breaks = seq(0.7,1,0.1)) + 
     xlab("Generation number") +
     ylab("Mean heritability") +
     theme(legend.position="none") +
@@ -377,7 +377,7 @@ for (i in 11){
     theme(axis.text=element_text(size=30)) +
     theme(text = element_text(size=30)) +
     ggtitle(NULL) +
-    theme(legend.position = c(0.7, 0.215)) +
+    theme(legend.position = c(0.7, 0.24)) +
     theme(legend.text=element_text(size=30)) +
     theme(legend.background = element_rect(fill = "transparent", color="black")) +
     theme(legend.title = element_blank()) +
