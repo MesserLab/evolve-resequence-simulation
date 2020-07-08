@@ -225,3 +225,6 @@ png(paste0("~/evolve-resequence-simulation/Figures/figure_6.png"), width = 800*2
 print(figure_6)
 dev.off()
 
+jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_6.jpeg"), width = 800*2, height = 750, units = "px", pointsize = 20)
+print(figure_6)
+dev.off()

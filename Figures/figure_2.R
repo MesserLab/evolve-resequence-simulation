@@ -133,6 +133,10 @@ if (Type %in% c("ComputationalMethod")){
     png(paste0("~/evolve-resequence-simulation/Figures/figure_2.png"), width = 800, height = 750, units = "px", pointsize = 20)
     print(p4)
     dev.off()
+
+    jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_2.jpeg"), width = 800, height = 750, units = "px", pointsize = 20)
+    print(p4)
+    dev.off()
     
   }
 }

@@ -231,3 +231,7 @@ figure_5 <- plot_grid(panel_a, panel_b, panel_c, panel_d, panel_e, panel_f, labe
 png(paste0("~/evolve-resequence-simulation/Figures/figure_5.png"), width = 800*3, height = 750*2, units = "px", pointsize = 20)
 print(figure_5)
 dev.off()
+
+jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_5.jpeg"), width = 800*3, height = 750*2, units = "px", pointsize = 20)
+print(figure_5)
+dev.off()

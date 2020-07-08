@@ -214,6 +214,10 @@ if (Type %in% c("QTL_architecture", "Experimental_design")){ # define filenames,
       png(paste0("~/evolve-resequence-simulation/Figures/figure_3.png"), width = 800, height = 750, units = "px", pointsize = 20)
       print(p6)
       dev.off()
+
+      jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_3.jpeg"), width = 800, height = 750, units = "px", pointsize = 20)
+      print(p6)
+      dev.off()
       
       rm(ROC_QTL_archetecture_pooled)
     }
