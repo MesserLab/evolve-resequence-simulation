@@ -112,6 +112,14 @@ if (Type %in% c("ComputationalMethod")){
       theme(axis.title = element_text(size = 30)) +
       theme(axis.text=element_text(size=30))
     
+    p5 <- p2 +
+      theme(legend.position = c(0.73, 0.83)) +
+      theme(legend.text=element_text(size=20)) +
+      theme(legend.background = element_rect(fill = "transparent", color="black")) +
+      theme(legend.title = element_blank()) +
+      theme(axis.title = element_text(size = 20)) +
+      theme(axis.text=element_text(size=20))
+    
     setwd(paste0(OutPath, "Figures/ROC/", Type, "/"))
     
     png(paste0(title[1], "_", Direction, "_Zoomed_Variance.png"), width = 1500, height = 760, units = "px", pointsize = 20)
@@ -136,6 +144,10 @@ if (Type %in% c("ComputationalMethod")){
 
     jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_2.jpeg"), width = 800, height = 750, units = "px", pointsize = 20)
     print(p4)
+    dev.off()
+    
+    jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_2_smaller_font.jpeg"), width = 800, height = 750, units = "px", pointsize = 20)
+    print(p5)
     dev.off()
     
   }

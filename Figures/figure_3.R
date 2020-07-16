@@ -189,6 +189,13 @@ if (Type %in% c("QTL_architecture", "Experimental_design")){ # define filenames,
         theme(legend.title = element_blank()) +
         theme(axis.title = element_text(size = 30)) +
         theme(axis.text=element_text(size=30))
+      p7 <- p3 +
+        theme(legend.position = c(0.87, 0.77)) +
+        theme(legend.text=element_text(size=20)) +
+        theme(legend.background = element_rect(fill = "transparent", color="black")) +
+        theme(legend.title = element_blank()) +
+        theme(axis.title = element_text(size = 20)) +
+        theme(axis.text=element_text(size=20))
       
       setwd(paste0(OutPath, "Figures/ROC/", title, "/"))
       
@@ -217,6 +224,10 @@ if (Type %in% c("QTL_architecture", "Experimental_design")){ # define filenames,
 
       jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_3.jpeg"), width = 800, height = 750, units = "px", pointsize = 20)
       print(p6)
+      dev.off()
+      
+      jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_3_smaller_font.jpeg"), width = 800, height = 750, units = "px", pointsize = 20)
+      print(p7)
       dev.off()
       
       rm(ROC_QTL_archetecture_pooled)

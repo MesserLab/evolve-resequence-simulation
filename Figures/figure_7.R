@@ -305,3 +305,26 @@ dev.off()
 jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_7.jpeg"), width = 800*2, height = 750*(1+2/3), units = "px", pointsize = 20)
 print(figure_7)
 dev.off()
+
+set_smaller_font <- function(x){
+  x +
+    theme(legend.text = element_text(size=20),
+          axis.title = element_text(size=20), 
+          axis.text = element_text(size=20))
+}
+panel_a_smaller_font <- set_smaller_font(panel_a) +
+  theme(legend.position = c(0.85, 0.2))
+panel_b_smaller_font <- set_smaller_font(panel_b) +
+  theme(legend.position = c(0.85, 0.2))
+panel_c_smaller_font <- set_smaller_font(panel_c)
+panel_d_smaller_font <- set_smaller_font(panel_d)
+panel_e_smaller_font <- set_smaller_font(panel_e)
+
+figure_7_up_smaller_font <- plot_grid(panel_a_smaller_font, panel_b_smaller_font, labels=c("A", "B"), nrow = 1, label_size=30)
+figure_7_down_smaller_font <- plot_grid(panel_c_smaller_font, panel_d_smaller_font, panel_e_smaller_font, labels=c("C", "D", "E"), nrow = 1, label_size=30)
+
+figure_7_smaller_font<- plot_grid(figure_7_up_smaller_font, figure_7_down_smaller_font, nrow = 2, rel_heights = c(1, 2/3))
+
+jpeg(paste0("~/evolve-resequence-simulation/Figures/figure_7_smaller_font.jpeg"), width = 800*2, height = 750*(1+2/3), units = "px", pointsize = 20)
+print(figure_7_smaller_font)
+dev.off()
