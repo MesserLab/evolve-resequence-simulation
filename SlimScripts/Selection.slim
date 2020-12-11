@@ -2,15 +2,37 @@
 
 // Depending on the population size, more or fewer burnin generations might be needed. If that's the case, the number 10000 in the begining of each section might also need to be changed. 
 
-initialize() {	initializeMutationRate(0);		// neutral mutations	initializeMutationType("m1", 0.5, "f", 0.0);	initializeGenomicElementType("g1", m1, 1.0);
-	m1.convertToSubstitution = F;	// mutations representing alleles in QTLs	initializeMutationType("m2", D, "f", 0.0);	m2.convertToSubstitution = F;		// a mutation type used to evaluate phenotypic fitness	initializeMutationType("m3", 0.5, "f", 0.0);	m3.convertToSubstitution = F;		
-	// set up the chromosome
-	initializeGenomicElement(g1, 0, LCh-1);	
-	// set recombination rate; change this if several chromosomes are simulated	initializeRecombinationRate(RecRate, LCh-1); 
+initialize() {
+	initializeMutationRate(0);
 	
-}
-10000 late() {	// read the burn-in	sim.readFromPopulationFile(BurninPath + "SimRep" + SimRepID + "/" + BurninFilename);
-			// give an m3 mutation to every individual, for phenotypic fitness	sim.subpopulations.genomes.addNewMutation(m3, 0.0, 0);
+	// neutral mutations
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeGenomicElementType("g1", m1, 1.0);
+	m1.convertToSubstitution = F;
+
+	// mutations representing alleles in QTLs
+	initializeMutationType("m2", D, "f", 0.0);
+	m2.convertToSubstitution = F;
+	
+	// a mutation type used to evaluate phenotypic fitness
+	initializeMutationType("m3", 0.5, "f", 0.0);
+	m3.convertToSubstitution = F;
+		
+	// set up the chromosome
+	initializeGenomicElement(g1, 0, LCh-1);
+	
+	// set recombination rate; change this if several chromosomes are simulated
+	initializeRecombinationRate(RecRate, LCh-1); 
+	
+}
+
+
+10000 late() {
+	// read the burn-in
+	sim.readFromPopulationFile(BurninPath + "SimRep" + SimRepID + "/" + BurninFilename);
+		
+	// give an m3 mutation to every individual, for phenotypic fitness
+	sim.subpopulations.genomes.addNewMutation(m3, 0.0, 0);
 	
 	// sanity check
 	// print(size(unique(sim.subpopulations.genomes.mutationsOfType(m1))));
@@ -77,11 +99,17 @@ initialize() {	initializeMutationRate(0);		// neutral mutations	initializeMu
 	// print(QTL);
 	// print(QTL.position);
 	// print(sim.mutationFrequencies(p1, QTL));
-}10000: late() {	// define generation number
+}
+
+
+
+10000: late() {
+	// define generation number
 	GenID = sim.generation-9999;
 
 	// define individual tags as phenotypes for the additive effects of QTLs while accounting for dominance
-	for (individual in sim.subpopulations.individuals)	{
+	for (individual in sim.subpopulations.individuals)
+	{
 			if (Epistasis == F)
 			{
 				// extract sites when the mutant alleles are hehomozygous or heterozygous as needed for dominance scenarios 
@@ -174,13 +202,18 @@ initialize() {	initializeMutationRate(0);		// neutral mutations	initializeMu
 	// redefine individual tags as their phenotypic ranks 
 	sim.subpopulations.individuals.tag[Order] = 0:(size(sim.subpopulations.individuals)-1);
 }
-10000: fitness(m2) {	// the QTLs themselves are neutral; the m3 mutation type handles them	return 1.0;	}
+10000: fitness(m2) {
+	// the QTLs themselves are neutral; the m3 mutation type handles them
+	return 1.0;
+	}
 	
-10000: fitness(m3) {	// keep only the 100 highest ranking individuals and remove all others
+10000: fitness(m3) {
+	// keep only the 100 highest ranking individuals and remove all others
 	if(individual.tag < SelectedSize) 
 		return 1.0;
 	else 
-		return 0.0;} 
+		return 0.0;
+} 
 
 
 10000:10010 late() {
