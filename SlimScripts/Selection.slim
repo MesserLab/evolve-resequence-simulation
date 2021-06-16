@@ -200,7 +200,7 @@ initialize() {
 	Order = order(sim.subpopulations.individuals.tag, Direction);
 	
 	// redefine individual tags as their phenotypic ranks 
-	sim.subpopulations.individuals.tag[Order] = 0:(size(sim.subpopulations.individuals)-1);
+	sim.subpopulations.individuals[Order].tag = 0:(size(sim.subpopulations.individuals)-1);
 }
 10000: fitness(m2) {
 	// the QTLs themselves are neutral; the m3 mutation type handles them
